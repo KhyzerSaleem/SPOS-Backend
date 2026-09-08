@@ -17,7 +17,8 @@
     "db:seed-roles": "npx ts-node --transpile-only scripts/seed-roles.ts",
     "db:unlock-admin": "npx ts-node --transpile-only scripts/unlock-admin.ts",
     "db:repair-indexes": "npx ts-node --transpile-only scripts/repair-indexes.ts",
-    "migrate:trial": "npx ts-node --transpile-only scripts/migrate-trial.ts"
+    "migrate:trial": "npx ts-node --transpile-only scripts/migrate-trial.ts",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -69,6 +70,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
