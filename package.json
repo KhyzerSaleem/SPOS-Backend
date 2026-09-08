@@ -14,6 +14,7 @@
     "test": "jest",
     "test:ci": "jest --ci --passWithNoTests",
     "db:reset": "npx ts-node --transpile-only scripts/reset-database.ts",
+    "db:seed-roles": "npx ts-node --transpile-only scripts/seed-roles.ts",
     "db:unlock-admin": "npx ts-node --transpile-only scripts/unlock-admin.ts",
     "db:repair-indexes": "npx ts-node --transpile-only scripts/repair-indexes.ts",
     "migrate:trial": "npx ts-node --transpile-only scripts/migrate-trial.ts"

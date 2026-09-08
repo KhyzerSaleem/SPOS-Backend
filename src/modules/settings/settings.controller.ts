@@ -21,6 +21,7 @@ import {
   RequirePermissions,
   RequireFeature,
 } from '../../common/guards/permissions.guard';
+import { OptionalStore } from '../../common/decorators/optional-store.decorator';
 import { SettingsService } from './settings.service';
 import { TenantService } from '../tenant/tenant.service';
 import { AuditService } from '../../common/services/audit.service';
@@ -63,6 +64,7 @@ export class SettingsController {
 
   // ── Locale (tenant-wide default language) ──
   @Get('locale')
+  @OptionalStore()
   @ApiOperation({ summary: 'Get tenant default locale' })
   async getLocale(@Req() req: Request) {
     const user = req.user as any;
@@ -70,6 +72,7 @@ export class SettingsController {
   }
 
   @Put('locale')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Update tenant default locale' })
   async putLocale(@Req() req: Request, @Body() body: { locale?: string }) {
@@ -115,6 +118,7 @@ export class SettingsController {
   }
 
   @Get('exchange-rates')
+  @OptionalStore()
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'List manual exchange rates for tenant base-currency conversion' })
   async getExchangeRates(@Req() req: Request) {
@@ -123,6 +127,7 @@ export class SettingsController {
   }
 
   @Post('exchange-rates')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Create or update a manual exchange rate' })
   async upsertExchangeRate(@Req() req: Request, @Body() body: any) {
@@ -131,6 +136,7 @@ export class SettingsController {
   }
 
   @Delete('exchange-rates/:id')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Delete a manual exchange rate' })
   async deleteExchangeRate(@Req() req: Request, @Param('id') id: string) {
@@ -240,6 +246,7 @@ export class SettingsController {
 
   // ── API Keys (Enterprise) ──
   @Get('api-keys')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'List API keys' })
@@ -249,6 +256,7 @@ export class SettingsController {
   }
 
   @Post('api-keys')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Generate a new API key' })
@@ -258,6 +266,7 @@ export class SettingsController {
   }
 
   @Delete('api-keys/:id')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Revoke an API key' })
@@ -268,6 +277,7 @@ export class SettingsController {
 
   // ── Roles ──
   @Get('roles')
+  @OptionalStore()
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'List all roles for tenant' })
   async getRoles(@Req() req: Request) {
@@ -276,6 +286,7 @@ export class SettingsController {
   }
 
   @Post('roles')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Create a role' })
   async createRole(@Req() req: Request, @Body() body: any) {
@@ -284,6 +295,7 @@ export class SettingsController {
   }
 
   @Put('roles/:id')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Update a role' })
   async updateRole(@Req() req: Request, @Param('id') id: string, @Body() body: any) {
@@ -292,6 +304,7 @@ export class SettingsController {
   }
 
   @Delete('roles/:id')
+  @OptionalStore()
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Delete a role' })
   async deleteRole(@Req() req: Request, @Param('id') id: string) {
@@ -353,6 +366,7 @@ export class SettingsController {
 
   // ── Audit Log (Pro+) ──
   @Get('audit-log')
+  @OptionalStore()
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'Paginated tenant audit log (Pro+)' })
   @ApiQuery({ name: 'page', required: false })
@@ -375,6 +389,7 @@ export class SettingsController {
   }
 
   @Get('audit-log/export')
+  @OptionalStore()
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'Export audit log as CSV (Pro+)' })
   async exportAuditLog(
@@ -392,6 +407,7 @@ export class SettingsController {
 
   // ── Webhooks (Enterprise + API) ──
   @Get('webhooks')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.view')
   @ApiOperation({ summary: 'List webhook subscriptions' })
@@ -401,6 +417,7 @@ export class SettingsController {
   }
 
   @Post('webhooks')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Create webhook subscription' })
@@ -410,6 +427,7 @@ export class SettingsController {
   }
 
   @Put('webhooks/:id')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Update webhook subscription' })
@@ -419,6 +437,7 @@ export class SettingsController {
   }
 
   @Delete('webhooks/:id')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Delete webhook subscription' })
@@ -428,6 +447,7 @@ export class SettingsController {
   }
 
   @Post('webhooks/:id/rotate-secret')
+  @OptionalStore()
   @RequireFeature('api')
   @RequirePermissions('settings.manage')
   @ApiOperation({ summary: 'Rotate webhook signing secret' })

@@ -5,16 +5,21 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { Store, StoreDocument } from '../../database/schemas/store.schema';
+import { OPTIONAL_STORE_KEY } from '../decorators/optional-store.decorator';
 
 /** Roles that have unrestricted access to every store within their tenant. */
 const STORE_UNRESTRICTED_ROLES = new Set(['super_admin', 'owner', 'admin']);
 
 @Injectable()
 export class StoreGuard implements CanActivate {
-  constructor(@InjectModel(Store.name) private storeModel: Model<StoreDocument>) {}
+  constructor(
+    @InjectModel(Store.name) private storeModel: Model<StoreDocument>,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -31,7 +36,15 @@ export class StoreGuard implements CanActivate {
     }
 
     const storeId = request.headers['x-store-id'] as string | undefined;
+    const isOptional = this.reflector?.getAllAndOverride<boolean>(OPTIONAL_STORE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
     if (!storeId) {
+      if (isOptional) {
+        return true;
+      }
       throw new BadRequestException('X-Store-Id header is required');
     }
 
