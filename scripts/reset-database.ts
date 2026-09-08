@@ -22,6 +22,9 @@ function loadEnv(): void {
   }
 }
 
+// Load .env before reading constants so values are available at module level
+loadEnv();
+
 const OWNER_EMAIL = process.env.SEED_OWNER_EMAIL ?? 'owner@swiftpos.local';
 const OWNER_PASSWORD = process.env.SEED_OWNER_PASSWORD;
 const ADMIN_EMAIL =
@@ -39,7 +42,6 @@ const BASIC_FEATURES = [
 ];
 
 async function main() {
-  loadEnv();
   const uri = process.env.DATABASE_URL;
   if (!uri) {
     console.error('DATABASE_URL is not set in server/.env');
