@@ -35,7 +35,14 @@ export class StoreGuard implements CanActivate {
       return true;
     }
 
-    const storeId = request.headers['x-store-id'] as string | undefined;
+    const rawStoreId = request.headers['x-store-id'];
+    const storeId =
+      typeof rawStoreId === 'string' &&
+      rawStoreId.trim() &&
+      rawStoreId !== 'undefined' &&
+      rawStoreId !== 'null'
+        ? rawStoreId.trim()
+        : undefined;
     const isOptional = this.reflector?.getAllAndOverride<boolean>(OPTIONAL_STORE_KEY, [
       context.getHandler(),
       context.getClass(),

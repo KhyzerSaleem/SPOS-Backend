@@ -31,6 +31,7 @@ import { CurrencyService } from '../../common/services/currency.service';
 @ApiTags('Settings')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, StoreGuard, PermissionsGuard)
+@OptionalStore()
 @RequireFeature('settings')
 @Controller('settings')
 export class SettingsController {
