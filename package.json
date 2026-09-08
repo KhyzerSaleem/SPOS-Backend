@@ -19,7 +19,7 @@
     "migrate:trial": "npx ts-node --transpile-only scripts/migrate-trial.ts"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@getbrevo/brevo": "^5.0.4",
