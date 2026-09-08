@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "name": "SwiftPOS Full System Dummy Dataset",
+    "version": "2026-06-14",
+    "purpose": "End-to-end validation of migrations, dashboard totals, reports, stock movement, supplier/customer balances, accounting, notifications, and multi-currency conversion.",
+    "baseCurrency": "PKR",
+    "scenario": "Pakistan owner with a PKR store and a GBP store."
+  },
+  "tenants": [
+    {
+      "key": "swift-demo-pk",
+      "name": "Swift Demo Retail Group",
+      "plan": "enterprise",
+      "baseCurrency": "PKR",
+      "baseCurrencySource": "country",
+      "country": "Pakistan"
+    }
+  ],
+  "stores": [
+    { "key": "lahore-main", "tenantKey": "swift-demo-pk", "name": "Lahore Main Store", "currency": "PKR", "country": "Pakistan" },
+    { "key": "london-branch", "tenantKey": "swift-demo-pk", "name": "London Branch", "currency": "GBP", "country": "United Kingdom" }
+  ],
+  "exchangeRates": [
+    { "tenantKey": "swift-demo-pk", "fromCurrency": "GBP", "toCurrency": "PKR", "rate": 350, "effectiveAt": "2026-06-01T00:00:00.000Z", "source": "manual" },
+    { "tenantKey": "swift-demo-pk", "fromCurrency": "PKR", "toCurrency": "PKR", "rate": 1, "effectiveAt": "2026-06-01T00:00:00.000Z", "source": "system" }
+  ],
+  "users": [
+    { "key": "owner", "tenantKey": "swift-demo-pk", "storeKeys": ["lahore-main", "london-branch"], "fullName": "Ayesha Khan", "email": "owner@swiftpos.test", "role": "owner" },
+    { "key": "lahore-manager", "tenantKey": "swift-demo-pk", "storeKeys": ["lahore-main"], "fullName": "Bilal Ahmed", "email": "lahore.manager@swiftpos.test", "role": "manager" },
+    { "key": "london-cashier", "tenantKey": "swift-demo-pk", "storeKeys": ["london-branch"], "fullName": "Sara Malik", "email": "london.cashier@swiftpos.test", "role": "cashier" }
+  ],
+  "categories": [
+    { "key": "apparel", "tenantKey": "swift-demo-pk", "name": "Apparel", "slug": "apparel" },
+    { "key": "grocery", "tenantKey": "swift-demo-pk", "name": "Grocery", "slug": "grocery" }
+  ],
+  "warehouses": [
+    { "key": "lahore-wh", "tenantKey": "swift-demo-pk", "storeKey": "lahore-main", "name": "Lahore Warehouse", "code": "LHR-WH" },
+    { "key": "lahore-floor", "tenantKey": "swift-demo-pk", "storeKey": "lahore-main", "name": "Lahore Shop Floor", "code": "LHR-FLOOR" },
+    { "key": "london-wh", "tenantKey": "swift-demo-pk", "storeKey": "london-branch", "name": "London Warehouse", "code": "LDN-WH" }
+  ],
+  "products": [
+    { "key": "kurta-pk", "storeKey": "lahore-main", "categoryKey": "apparel", "name": "Classic Kurta", "sku": "KURTA-001", "barcode": "890000001", "price": 4500, "costPrice": 2500, "stock": 80, "reorderPoint": 15 },
+    { "key": "rice-pk", "storeKey": "lahore-main", "categoryKey": "grocery", "name": "Basmati Rice 5kg", "sku": "RICE-005", "barcode": "890000002", "price": 3200, "costPrice": 2400, "stock": 45, "reorderPoint": 10 },
+    { "key": "jacket-uk", "storeKey": "london-branch", "categoryKey": "apparel", "name": "Winter Jacket", "sku": "JACKET-001", "barcode": "990000001", "price": 120, "costPrice": 70, "stock": 30, "reorderPoint": 5 }
+  ],
+  "variants": [
+    { "productKey": "kurta-pk", "sku": "KURTA-001-M", "attributes": { "Size": "M", "Color": "White" }, "stock": 40 },
+    { "productKey": "kurta-pk", "sku": "KURTA-001-L", "attributes": { "Size": "L", "Color": "White" }, "stock": 40 },
+    { "productKey": "jacket-uk", "sku": "JACKET-001-M", "attributes": { "Size": "M", "Color": "Black" }, "stock": 15 },
+    { "productKey": "jacket-uk", "sku": "JACKET-001-L", "attributes": { "Size": "L", "Color": "Black" }, "stock": 15 }
+  ],
+  "suppliers": [
+    { "key": "lahore-textiles", "storeKey": "lahore-main", "name": "Lahore Textiles Ltd", "payableBalance": 100000, "basePayableBalance": 100000 },
+    { "key": "uk-outerwear", "storeKey": "london-branch", "name": "UK Outerwear Wholesale", "payableBalance": 1400, "basePayableBalance": 490000 }
+  ],
+  "customers": [
+    { "key": "walkin-pk", "storeKey": "lahore-main", "name": "Walk-in Customer PK", "phone": "+923001111111", "loyaltyPoints": 120 },
+    { "key": "walkin-uk", "storeKey": "london-branch", "name": "Walk-in Customer UK", "phone": "+447700900111", "loyaltyPoints": 80 }
+  ],
+  "purchases": [
+    {
+      "key": "po-pk-001",
+      "storeKey": "lahore-main",
+      "warehouseKey": "lahore-wh",
+      "supplierKey": "lahore-textiles",
+      "poNumber": "PO-PK-001",
+      "currency": "PKR",
+      "exchangeRate": 1,
+      "totalAmount": 250000,
+      "baseTotalAmount": 250000,
+      "items": [{ "productKey": "kurta-pk", "quantity": 100, "unitCost": 2500, "baseUnitCost": 2500 }]
+    },
+    {
+      "key": "po-uk-001",
+      "storeKey": "london-branch",
+      "warehouseKey": "london-wh",
+      "supplierKey": "uk-outerwear",
+      "poNumber": "PO-UK-001",
+      "currency": "GBP",
+      "exchangeRate": 350,
+      "totalAmount": 2100,
+      "baseTotalAmount": 735000,
+      "items": [{ "productKey": "jacket-uk", "quantity": 30, "unitCost": 70, "baseUnitCost": 24500 }]
+    }
+  ],
+  "supplierInvoices": [
+    { "key": "sinv-pk-001", "poKey": "po-pk-001", "invoiceNumber": "SINV-PK-001", "totalAmount": 250000, "baseTotalAmount": 250000, "paidAmount": 150000, "basePaidAmount": 150000, "balanceDue": 100000, "baseBalanceDue": 100000, "dueDate": "2026-06-20" },
+    { "key": "sinv-uk-001", "poKey": "po-uk-001", "invoiceNumber": "SINV-UK-001", "totalAmount": 2100, "baseTotalAmount": 735000, "paidAmount": 700, "basePaidAmount": 245000, "balanceDue": 1400, "baseBalanceDue": 490000, "dueDate": "2026-06-18" }
+  ],
+  "sales": [
+    {
+      "key": "sale-pk-001",
+      "storeKey": "lahore-main",
+      "customerKey": "walkin-pk",
+      "orderNumber": "SALE-PK-001",
+      "currency": "PKR",
+      "exchangeRate": 1,
+      "subtotal": 90000,
+      "tax": 9000,
+      "discount": 4000,
+      "totalAmount": 95000,
+      "baseTotalAmount": 95000,
+      "items": [{ "productKey": "kurta-pk", "quantity": 20, "price": 4500, "unitCost": 2500, "lineCost": 50000 }]
+    },
+    {
+      "key": "sale-uk-001",
+      "storeKey": "london-branch",
+      "customerKey": "walkin-uk",
+      "orderNumber": "SALE-UK-001",
+      "currency": "GBP",
+      "exchangeRate": 350,
+      "subtotal": 300,
+      "tax": 60,
+      "discount": 0,
+      "totalAmount": 360,
+      "baseTotalAmount": 126000,
+      "items": [{ "productKey": "jacket-uk", "quantity": 3, "price": 120, "unitCost": 70, "lineCost": 210, "baseLineCost": 73500 }]
+    }
+  ],
+  "returns": [
+    { "key": "return-pk-001", "saleKey": "sale-pk-001", "orderNumber": "RET-PK-001", "currency": "PKR", "exchangeRate": 1, "totalAmount": 4500, "baseTotalAmount": 4500, "reason": "Size exchange" }
+  ],
+  "expenses": [
+    { "key": "rent-pk", "storeKey": "lahore-main", "expenseNumber": "EXP-PK-001", "category": "Rent", "amount": 40000, "tax": 0, "total": 40000, "baseTotal": 40000, "currency": "PKR", "exchangeRate": 1 },
+    { "key": "utilities-uk", "storeKey": "london-branch", "expenseNumber": "EXP-UK-001", "category": "Utilities", "amount": 80, "tax": 16, "total": 96, "baseTotal": 33600, "currency": "GBP", "exchangeRate": 350 }
+  ],
+  "stockMovements": [
+    { "storeKey": "lahore-main", "warehouseKey": "lahore-wh", "productKey": "kurta-pk", "type": "in", "quantity": 100, "reason": "Opening stock" },
+    { "storeKey": "lahore-main", "warehouseKey": "lahore-wh", "productKey": "kurta-pk", "type": "transfer_out", "quantity": -20, "reason": "Transfer to shop floor" },
+    { "storeKey": "lahore-main", "warehouseKey": "lahore-floor", "productKey": "kurta-pk", "type": "transfer_in", "quantity": 20, "reason": "Received from warehouse" },
+    { "storeKey": "london-branch", "warehouseKey": "london-wh", "productKey": "jacket-uk", "type": "in", "quantity": 30, "reason": "Opening stock" }
+  ],
+  "transfers": [
+    { "key": "trf-pk-001", "transferNumber": "TRF-PK-001", "fromWarehouseKey": "lahore-wh", "toWarehouseKey": "lahore-floor", "status": "completed", "items": [{ "productKey": "kurta-pk", "quantity": 20 }] }
+  ],
+  "accounts": [
+    { "code": "1000", "name": "Cash", "type": "asset", "balance": 371000 },
+    { "code": "1200", "name": "Inventory", "type": "asset", "balance": 985000 },
+    { "code": "2000", "name": "Accounts Payable", "type": "liability", "balance": 590000 },
+    { "code": "4000", "name": "Sales Revenue", "type": "revenue", "balance": 221000 },
+    { "code": "5000", "name": "COGS", "type": "expense", "balance": 123500 },
+    { "code": "6000", "name": "Operating Expenses", "type": "expense", "balance": 73600 }
+  ],
+  "journalEntries": [
+    { "entryNumber": "JE-SALE-PK-001", "source": "sale-pk-001", "debit": 95000, "credit": 95000, "currency": "PKR", "exchangeRate": 1 },
+    { "entryNumber": "JE-SALE-UK-001", "source": "sale-uk-001", "debit": 126000, "credit": 126000, "currency": "GBP", "exchangeRate": 350 },
+    { "entryNumber": "JE-EXP-PK-001", "source": "rent-pk", "debit": 40000, "credit": 40000, "currency": "PKR", "exchangeRate": 1 },
+    { "entryNumber": "JE-EXP-UK-001", "source": "utilities-uk", "debit": 33600, "credit": 33600, "currency": "GBP", "exchangeRate": 350 }
+  ],
+  "notifications": [
+    { "type": "inventory", "title": "Transfer received", "message": "TRF-PK-001 received into Lahore Shop Floor." },
+    { "type": "finance", "title": "Supplier payables due", "message": "2 supplier invoices are due soon." },
+    { "type": "migration", "title": "Import completed", "message": "Historical sales import completed." },
+    { "type": "report", "title": "Report export ready", "message": "Profit-loss PDF export completed." }
+  ],
+  "expectedValues": {
+    "dashboard": {
+      "netSalesBase": 216500,
+      "grossSalesBase": 221000,
+      "returnsBase": 4500,
+      "cogsBase": 123500,
+      "grossProfitBase": 93000,
+      "expensesBase": 73600,
+      "netProfitBase": 19400
+    },
+    "inventory": {
+      "kurta-pk": { "warehouse": 60, "shopFloor": 20, "total": 80 },
+      "jacket-uk": { "warehouse": 30, "total": 30, "baseInventoryValue": 735000 }
+    },
+    "supplierBalances": {
+      "lahore-textiles": { "balanceDueBase": 100000 },
+      "uk-outerwear": { "balanceDueBase": 490000 },
+      "totalPayablesBase": 590000
+    },
+    "reportChecks": {
+      "salesReport.totalSales": 221000,
+      "salesReport.netSalesAfterReturns": 216500,
+      "profitLoss.grossProfit": 93000,
+      "profitLoss.netProfit": 19400,
+      "vatTax.salesTaxBase": 30000,
+      "expenseReport.totalBase": 73600
+    }
+  }
+}
+
