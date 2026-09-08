@@ -8,7 +8,7 @@ export class Unit {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ default: '' })
   abbreviation: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Tenant', required: true })

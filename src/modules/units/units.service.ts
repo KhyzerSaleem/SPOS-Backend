@@ -23,16 +23,17 @@ export class UnitsService {
   }
 
   async create(tenantId: string, dto: CreateUnitDto) {
+    const name = dto.name?.trim();
     const exists = await this.unitModel.findOne({
       tenantId: new Types.ObjectId(tenantId),
-      name: dto.name,
+      name,
       ...notDeletedFilter(),
     });
     if (exists) throw new ConflictException('Unit name already exists');
 
     return this.unitModel.create({
-      name: dto.name,
-      abbreviation: dto.abbreviation,
+      name,
+      abbreviation: (dto.abbreviation ?? '').trim(),
       tenantId: new Types.ObjectId(tenantId),
     });
   }
@@ -45,8 +46,8 @@ export class UnitsService {
     });
     if (!unit) throw new NotFoundException('Unit not found');
 
-    if (dto.name) unit.name = dto.name;
-    if (dto.abbreviation) unit.abbreviation = dto.abbreviation;
+    if (dto.name !== undefined) unit.name = dto.name.trim();
+    if (dto.abbreviation !== undefined) unit.abbreviation = dto.abbreviation.trim();
     await unit.save();
     return unit;
   }

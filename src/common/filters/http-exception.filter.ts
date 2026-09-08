@@ -58,6 +58,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             ` index=${info.indexName ?? 'unknown'}` +
             ` key=${JSON.stringify(info.rawKey)}`,
         );
+      } else if (exception.name === 'ValidationError' || exception.name === 'CastError') {
+        status = HttpStatus.BAD_REQUEST;
+        message = exception.message;
+        this.logger.warn(
+          `[${request.requestId || 'no-id'}] ${request.method} ${request.url} → 400 ${exception.name}: ${exception.message}`,
+        );
       } else {
         message = exception.message;
         this.logger.error(`Unhandled error: ${exception.message}`, exception.stack);
